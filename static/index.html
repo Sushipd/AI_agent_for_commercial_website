@@ -9,78 +9,32 @@
     h1 { text-align:center; margin-bottom:20px; }
     h2 { margin: 30px 0 10px; color:#333; }
 
-    /* Chatbox styling */
-    #chat-box-container {
-      max-width: 450px;
-      margin: 0 auto 20px auto;
-      display: flex;
-      flex-direction: column;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      background: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-
-    #chat-container {
-      flex: 1;
-      height: 300px;
-      overflow-y: auto;
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: #f9f9f9;
-    }
-
-    .message.user { align-self: flex-end; background: #4CAF50; color: white; padding: 8px 12px; border-radius: 16px 16px 0 16px; max-width: 80%; }
-    .message.bot { align-self: flex-start; background: #eee; color: #333; padding: 8px 12px; border-radius: 16px 16px 16px 0; max-width: 80%; }
-
-    #chat-input-container { display: flex; justify-content: center; align-items: center; margin: 10px auto 20px auto; max-width: 400px; gap: 8px; }
-    #userInput { flex: 1; padding: 12px 16px; border-radius: 25px; border: 1px solid #ccc; font-size: 1rem; outline: none; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
-    #userInput:focus { border-color: #4CAF50; box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); }
-    #userInput::placeholder { color: #aaa; font-style: italic; }
-    #sendBtn { 
-      background: linear-gradient(45deg, #4CAF50, #66BB6A);
-      border: none;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 25px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+    /* Chatbox */
+    #chat-box-container { max-width: 450px; margin: 0 auto 20px; display:flex; flex-direction:column; border:1px solid #ccc; border-radius:12px; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.1); overflow:hidden; }
+    #chat-container { flex:1; height:300px; overflow-y:auto; padding:12px 16px; display:flex; flex-direction:column; gap:8px; background:#f9f9f9; }
+    .message.user { align-self:flex-end; background:#4CAF50; color:white; padding:8px 12px; border-radius:16px 16px 0 16px; max-width:80%; }
+    .message.bot { align-self:flex-start; background:#eee; color:#333; padding:8px 12px; border-radius:16px 16px 16px 0; max-width:80%; }
+    #chat-input-container { display:flex; justify-content:center; align-items:center; margin:10px auto 20px; max-width:400px; gap:8px; }
+    #userInput { flex:1; padding:12px 16px; border-radius:25px; border:1px solid #ccc; font-size:1rem; outline:none; box-shadow:inset 0 2px 5px rgba(0,0,0,0.05); }
+    #userInput:focus { border-color:#4CAF50; box-shadow:0 0 5px rgba(76,175,80,0.5); }
+    #sendBtn { background:linear-gradient(45deg,#4CAF50,#66BB6A); border:none; color:white; padding:12px 20px; border-radius:25px; font-size:1rem; cursor:pointer; transition:0.3s; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
     #sendBtn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     #sendBtn:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+    /* Upload */
+    .upload-section { max-width:450px; margin:20px auto; padding:12px; border:1px solid #ccc; border-radius:12px; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,0.1); text-align:center; }
+    .image-preview { display:none; max-width:100%; max-height:200px; margin-top:10px; border-radius:8px; object-fit:contain; }
+    #searchImageBtn { margin-top:10px; background:linear-gradient(45deg,#4CAF50,#66BB6A); border:none; color:white; padding:10px 16px; border-radius:25px; font-size:1rem; cursor:pointer; }
 
     /* Carousel styling */
     .carousel-container { position: relative; display: flex; align-items: center; margin-bottom:20px; }
     .carousel { display:flex; overflow-x:auto; scroll-behavior:smooth; gap:10px; padding:10px 0; width:100%; }
     .carousel::-webkit-scrollbar { display:none; }
-
-    .product-card {
-      min-width: 160px;
-      max-width: 160px;
-      background:#fff;
-      border-radius:8px;
-      overflow:hidden;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1);
-      text-align:center;
-      flex-shrink:0;
-      position:relative;
-      padding-bottom:6px;
-    }
+    .product-card { min-width:160px; max-width:160px; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.1); text-align:center; flex-shrink:0; padding-bottom:6px; }
     .product-card img { width:160px; height:120px; object-fit:cover; display:block; }
     .product-name { font-size:0.95rem; margin:6px 4px; font-weight:500; color:#333; }
-
-    .scroll-btn {
-      background: rgba(0,0,0,0.5); border:none; color:#fff; font-size:20px;
-      cursor:pointer; padding:8px 10px; border-radius:6px; position:absolute; top:50%;
-      transform:translateY(-50%); z-index:2;
-    }
-    .scroll-left { left: -10px; }
-    .scroll-right { right: -10px; }
+    .scroll-btn { background: rgba(0,0,0,0.5); border:none; color:#fff; font-size:20px; cursor:pointer; padding:8px 10px; border-radius:6px; position:absolute; top:50%; transform:translateY(-50%); z-index:2; }
+    .scroll-left { left: -10px; } .scroll-right { right: -10px; }
 
     .tooltip { visibility: hidden; width: 220px; background: rgba(0,0,0,0.85); color: #fff;
       text-align: left; padding: 8px; border-radius: 6px; position: absolute; bottom: 120%;
@@ -88,6 +42,7 @@
       opacity: 0; transition: opacity .2s ease; white-space: normal; word-break: break-word; }
     .product-card:hover .tooltip { visibility: visible; opacity: 1; }
 
+    /* Recommendations */
     #recommendation-card { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; justify-content:center; }
     .rec-card { border:1px solid #ccc; border-radius:6px; width:120px; text-align:center; padding:5px; background:white; }
     .rec-card img { width:100px; height:80px; object-fit:cover; }
@@ -104,6 +59,12 @@
   <div id="chat-input-container">
     <input type="text" id="userInput" placeholder="Ask for a product..." />
     <button id="sendBtn">Send</button>
+  </div>
+  <div class="upload-section">
+    <h2>Or Upload Image</h2>
+    <input type="file" accept="image/*" id="imageUpload">
+    <img id="imagePreview" class="image-preview" alt="Uploaded Image Preview">
+    <button id="searchImageBtn">Search Product</button>
   </div>
 </div>
 
@@ -144,145 +105,133 @@
 </div>
 
 <script>
-  document.getElementById("sendBtn").addEventListener("click", sendMessage);
-  document.getElementById("userInput").addEventListener("keypress", function(e) {
-    if(e.key === "Enter") sendMessage();
+  // Chat
+  const chatInput = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const chatContainer = document.getElementById("chat-container");
+  const recommendationCard = document.getElementById("recommendation-card");
+
+  sendBtn.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keypress", (e)=>{ if(e.key==="Enter") sendMessage(); });
+
+  function addMessage(sender,text,cls){
+    const msg = document.createElement("div"); msg.className="message "+cls;
+    msg.innerHTML=`<strong>${sender}:</strong> ${text}`;
+    chatContainer.appendChild(msg); chatContainer.scrollTop=chatContainer.scrollHeight;
+  }
+
+  function displayRecommendations(products){
+    recommendationCard.innerHTML="";
+    if(!products) return;
+    products.forEach(p=>{
+      const card=document.createElement("div"); card.className="rec-card";
+      const img=document.createElement("img"); img.src=p.img; img.alt=p.class_name;
+      img.onerror=()=>console.error("Image not found:",img.src);
+      const name=document.createElement("div"); name.textContent=`${p.coarse}: ${p.class_name}`;
+      card.appendChild(img); card.appendChild(name); recommendationCard.appendChild(card);
+    });
+  }
+
+  async function sendMessage(){
+    const text=chatInput.value.trim(); if(!text) return;
+    addMessage("You",text,"user"); chatInput.value="";
+    try{
+      const res=await fetch("/recommend",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text})});
+      const data=await res.json();
+      addMessage("Bot",data.text,"bot"); displayRecommendations(data.products);
+    }catch(err){ console.error(err); addMessage("Bot","Sorry, I couldn't get a recommendation.","bot"); }
+  }
+
+  // Image search
+  const imageInput=document.getElementById("imageUpload");
+  const imagePreview=document.getElementById("imagePreview");
+  const searchImageBtn=document.getElementById("searchImageBtn");
+
+  imageInput.addEventListener("change",()=>{ 
+    const file=imageInput.files[0]; if(!file) return;
+    const reader=new FileReader();
+    reader.onload=(e)=>{ imagePreview.src=e.target.result; imagePreview.style.display="block"; };
+    reader.readAsDataURL(file);
   });
 
-  // -------------------------------
-  // Carousel helpers
-  // -------------------------------
-  function scrollCarousel(carousel, direction) {
-    const card = carousel.querySelector('.product-card');
-    const cardWidth = card ? (card.offsetWidth + 10) : 170;
-    carousel.scrollBy({ left: direction * cardWidth * 3, behavior: 'smooth' });
-  }
-
-  function populateStaticCategory(id, folder, count=199) {
-    const container = document.getElementById(id);
-    if (!container) return;
-    container.innerHTML = ""; 
-    for (let i=1; i<=count; i++){
-      const card = document.createElement('div'); card.className='product-card';
-      const img = document.createElement('img'); 
-      img.src=`/static/ecommerce_products/${folder}/${i}.jpg`; 
-      img.alt=`${folder} ${i}`;
-      img.onerror = () => console.error("Image not found:", img.src);
-      const name = document.createElement('div'); 
-      name.className='product-name'; 
-      name.textContent = `${folder.charAt(0).toUpperCase() + folder.slice(1)} ${i}`;
-      card.appendChild(img); card.appendChild(name); 
-      container.appendChild(card);
-    }
-  }
-
-  // Populate static categories
-  populateStaticCategory('jeans-carousel','jeans');
-  populateStaticCategory('sofa-carousel','sofa');
-  populateStaticCategory('tshirt-carousel','tshirt');
-  populateStaticCategory('tv-carousel','tv');
-
-  // -------------------------------
-  // Load grocery CSV robustly
-  // -------------------------------
-  async function loadGroceryFromCSV() {
+  searchImageBtn.addEventListener("click", async () => { 
+    const file = imageInput.files[0];
+    if (!file) { addMessage("Bot", "Please select an image first!", "bot"); return; }
+    addMessage("You", "Uploaded an image for search.", "user");
+    const formData = new FormData(); formData.append('file', file);
     try {
-      const res = await fetch('/static/GroceryStoreDataset/dataset/classes.csv');
-      if (!res.ok) throw new Error(`CSV not found: ${res.status}`);
-      const text = await res.text();
-
-      const rows = text.split(/\r?\n/).filter(r => r.trim() !== '');
-      const header = rows[0].split(',').map(h => h.trim());
-      const idxClass = header.indexOf("Class Name (str)");
-      const idxCoarse = header.indexOf("Coarse Class Name (str)");
-      const idxIconic = header.indexOf("Iconic Image Path (str)");
-
-      const carousel = document.getElementById('grocery-carousel');
-      carousel.innerHTML = "";
-
-      for (let i = 1; i < rows.length; i++) {
-        const cols = rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
-        if (!cols) continue;
-
-        const className = cols[idxClass]?.replace(/"/g,'').trim();
-        const coarseName = cols[idxCoarse]?.replace(/"/g,'').trim();
-        const imgPath = "/static/GroceryStoreDataset/dataset/" + cols[idxIconic]?.replace(/"/g,'').trim();
-
-        if (!className || !imgPath) continue;
-
-        const card = document.createElement('div'); card.className='product-card';
-        const img = document.createElement('img'); img.src = imgPath; img.alt = className;
-        img.onerror = () => console.error("Image not found:", img.src);
-        const name = document.createElement('div'); name.className='product-name'; name.textContent = `${coarseName}: ${className}`;
-        card.appendChild(img); card.appendChild(name);
-        carousel.appendChild(card);
+      const res = await fetch("/image-search", { method: "POST", body: formData });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`${res.status} - ${errText}`);
       }
-
-    } catch(err) {
-      console.error("Error loading grocery CSV:", err);
-    }
-  }
-
-  // -------------------------------
-  // Chat + Recommendation
-  // -------------------------------
-  async function sendMessage() {
-    const input = document.getElementById('userInput');
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage("You", text, "user");
-
-    try {
-        const res = await fetch('/recommend', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text })
-        });
-        const data = await res.json();
-
-        addMessage("Bot", data.text, "bot");
-
-        const container = document.getElementById("recommendation-card");
-        container.innerHTML = "";
-        if (data.products && data.products.length > 0) {
-            data.products.forEach(p => {
-                const card = document.createElement("div");
-                card.className = "rec-card";
-
-                const img = document.createElement("img");
-                img.src = p.img;
-                img.alt = p.class_name;
-                img.onerror = () => console.error("Image not found:", img.src);
-
-                const name = document.createElement("div");
-                name.textContent = `${p.coarse}: ${p.class_name}`;
-
-                card.appendChild(img);
-                card.appendChild(name);
-                container.appendChild(card);
-            });
-        }
-
-        input.value = "";
+      const data = await res.json();
+      // Show the API text once
+      addMessage("Bot", `${data.text || ""} (Condition: ${data.condition})`, "bot");
+      // Show recommendations if available
+      if (data.products && data.products.length > 0) {
+        displayRecommendations(data.products);
+      } else {
+        // Clear recommendations if none found
+        recommendationCard.innerHTML = "";
+      }
     } catch (err) {
-        console.error("Error calling recommendation API:", err);
-        addMessage("Bot", "Sorry, I couldn't get a recommendation.", "bot");
+      console.error(err);
+      addMessage("Bot", `Sorry, something went wrong. (${err.message})`, "bot");
+    }
+  });
+
+  // Carousel helpers
+  function scrollCarousel(carousel,direction){
+    const card=carousel.querySelector(".product-card");
+    const width=card?(card.offsetWidth+10):170;
+    carousel.scrollBy({left:direction*width*3,behavior:"smooth"});
+  }
+
+  function populateStaticCategory(id,folder,count=199){
+    const container=document.getElementById(id); if(!container) return; container.innerHTML="";
+    for(let i=1;i<=count;i++){
+      const card=document.createElement("div"); card.className="product-card";
+      const img=document.createElement("img"); img.src=`/static/ecommerce_products/${folder}/${i}.jpg`; img.alt=`${folder} ${i}`;
+      img.onerror=()=>console.error("Image not found:",img.src);
+      const name=document.createElement("div"); name.className="product-name"; name.textContent=`${folder.charAt(0).toUpperCase()+folder.slice(1)} ${i}`;
+      card.appendChild(img); card.appendChild(name); container.appendChild(card);
     }
   }
 
-  function addMessage(sender, text, cls) {
-    const chat = document.getElementById("chat-container");
-    const msg = document.createElement("div");
-    msg.className = "message " + cls;
-    msg.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    chat.appendChild(msg);
-    chat.scrollTop = chat.scrollHeight;
+  async function loadGroceryFromCSV(){
+    try{
+      const res=await fetch("/static/GroceryStoreDataset/dataset/classes.csv");
+      if(!res.ok) throw new Error(`CSV not found: ${res.status}`);
+      const text=await res.text();
+      const rows=text.split(/\r?\n/).filter(r=>r.trim()!=="");
+      const header=rows[0].split(",").map(h=>h.trim());
+      const idxClass=header.indexOf("Class Name (str)");
+      const idxCoarse=header.indexOf("Coarse Class Name (str)");
+      const idxIconic=header.indexOf("Iconic Image Path (str)");
+      const carousel=document.getElementById("grocery-carousel"); carousel.innerHTML="";
+      for(let i=1;i<rows.length;i++){
+        const cols=rows[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g); if(!cols) continue;
+        const className=cols[idxClass]?.replace(/"/g,'').trim();
+        const coarseName=cols[idxCoarse]?.replace(/"/g,'').trim();
+        const imgPath="/static/GroceryStoreDataset/dataset/"+cols[idxIconic]?.replace(/"/g,'').trim();
+        if(!className||!imgPath) continue;
+        const card=document.createElement("div"); card.className="product-card";
+        const img=document.createElement("img"); img.src=imgPath; img.alt=className; img.onerror=()=>console.error("Image not found:",img.src);
+        const name=document.createElement("div"); name.className="product-name"; name.textContent=`${coarseName}: ${className}`;
+        card.appendChild(img); card.appendChild(name); carousel.appendChild(card);
+      }
+    }catch(err){ console.error("Error loading grocery CSV:",err); }
   }
 
-  window.onload = function() {
+  // On load
+  window.onload=function(){
+    populateStaticCategory("jeans-carousel","jeans");
+    populateStaticCategory("sofa-carousel","sofa");
+    populateStaticCategory("tshirt-carousel","tshirt");
+    populateStaticCategory("tv-carousel","tv");
     loadGroceryFromCSV();
-    addMessage("Bot", "Hello! I am AI Chatbot Jim. I can do text-based product help, image-based search, and general chat. Type your message below to get started.", "bot");
+    addMessage("Bot","Hello! I am AI Chatbot Jim. You can type a message or upload an image to find matching products.","bot");
   };
 </script>
 

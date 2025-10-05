@@ -1,10 +1,16 @@
 import random
 import re
 import csv
+from PIL import Image
+import io
 import numpy as np
 import torch
 from sentence_transformers import SentenceTransformer, util
 from transformers import AutoModelForCausalLM, AutoTokenizer
+import torchvision.transforms as T
+from torchvision import models
+from pathlib import Path
+import traceback
 
 # -----------------------
 # Category synonyms
@@ -53,7 +59,7 @@ class HybridChatbot:
                     product = {
                         "class_name": row.get("Class Name (str)", "").strip(),
                         "coarse": row.get("Coarse Class Name (str)", "").strip(),
-                        "img": "static/GroceryStoreDataset/dataset" + row.get("Iconic Image Path (str)", "").strip()
+                        "img": "static/GroceryStoreDataset/dataset/" + row.get("Iconic Image Path (str)", "").strip()
                     }
                     self.GROCERY_PRODUCTS.append(product)
             print(f"[INFO] Loaded {len(self.GROCERY_PRODUCTS)} grocery products.")
@@ -82,7 +88,7 @@ class HybridChatbot:
         for cat in self.STATIC_CATEGORIES:
             self.keywords.add(cat.lower())
 
-        # --- Load embeddings model ---
+        # --- Load embeddings model for text search ---
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
         self.category_embeddings = {}
         for cat, syns in CATEGORY_SYNONYMS.items():
@@ -91,6 +97,27 @@ class HybridChatbot:
             self.category_embeddings[norm_cat] = self.embedding_model.encode(
                 norm_syns, convert_to_tensor=True, device=self.embedding_model.device
             )
+
+        # Combine all products for image search
+        self.ALL_PRODUCTS = self.GROCERY_PRODUCTS.copy()
+        for cat_products in self.STATIC_CATEGORIES.values():
+            self.ALL_PRODUCTS.extend(cat_products)
+
+        # Precompute embeddings for image search (optional: for efficiency)
+        self.image_embeddings = {}  # key: product index, value: embedding tensor
+        # self.image_model = torch.hub.load('pytorch/vision:v0.16.0', 'resnet18', pretrained=True)
+        self.image_model = models.resnet18(pretrained=True)
+        self.image_model.fc = torch.nn.Identity()  # remove classification head
+        self.image_model.eval()
+        self.image_model = self.image_model.to('cuda' if torch.cuda.is_available() else 'cpu')
+
+        # Image transform
+        self.image_transform = T.Compose([
+            T.Resize((224, 224)),
+            T.ToTensor(),
+            T.Normalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225])
+        ])
 
         # --- Intents ---
         self.intents = {
@@ -240,7 +267,7 @@ class HybridChatbot:
         return {"text": "I recommend these products: " + " | ".join(messages), "products": selected}
 
     # -----------------------
-    # Get response
+    # Get response for text search
     # -----------------------
     def get_response(self, user_input):
         norm_input_tokens = [self.normalize(w) for w in self.tokenize(user_input)]
@@ -263,3 +290,62 @@ class HybridChatbot:
         # 4. Fallback: try recommending products anyway
         return self.recommend_products(user_input)
 
+    # -----------------------
+    # Get response for image search
+    # -----------------------
+    def get_response_from_image(self, image_bytes, top_n=3):
+        try:
+            # device = self.image_model.device
+            device = next(self.image_model.parameters()).device
+            # Open uploaded image
+            image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
+            img_tensor = self.image_transform(image).unsqueeze(0).to(device)
+
+            with torch.no_grad():
+                query_emb = self.image_model(img_tensor)
+
+            scores = []
+            base_dir = Path(__file__).resolve().parent
+
+            for idx, product in enumerate(self.ALL_PRODUCTS):
+                try:
+                    prod_img_path = base_dir / product["img"]
+                    if not prod_img_path.exists():
+                        print(f"[WARN] Missing image: {prod_img_path}")
+                        continue
+
+                    # Compute embedding only if not already cached
+                    if idx not in self.image_embeddings:
+                        try:
+                            prod_img = Image.open(prod_img_path).convert('RGB')
+                            prod_tensor = self.image_transform(prod_img).unsqueeze(0).to(device)
+                            with torch.no_grad():
+                                emb = self.image_model(prod_tensor)
+                            self.image_embeddings[idx] = emb
+                        except Exception as e:
+                            print(f"[WARN] Failed to load image {prod_img_path}: {e}")
+                            continue
+
+                    # Cosine similarity
+                    sim = torch.nn.functional.cosine_similarity(query_emb, self.image_embeddings[idx], dim=1)
+                    scores.append((sim.item(), product))
+
+                except Exception as e:
+                    print(f"[WARN] Failed processing product {product.get('img', '?')}: {e}")
+                    continue
+
+            # Sort top N
+            scores.sort(key=lambda x: x[0], reverse=True)
+            top_products = [p for _, p in scores[:top_n]]
+
+            if top_products:
+                messages = [f"{p['class_name']} ({p['coarse']}) - see: {p['img']}" for p in top_products]
+                return {"text": "I found these products matching your image: " + " | ".join(messages),
+                        "products": top_products}
+            else:
+                return {"text": "Sorry, I couldn’t find visually similar products.", "products": []}
+
+        except Exception as e:
+            print("[ERROR] Image search failed:", e)
+            traceback.print_exc()  # Add this line
+            return {"text": "Sorry, I couldn't process your image.", "products": []}

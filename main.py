@@ -1,6 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from pathlib import Path
@@ -62,11 +62,55 @@ async def recommend(query: UserQuery):
 
         # Normalize response into JSON structure
         if isinstance(response, str):
-            return {"text": response, "products": None}
+            return {"text": response, "products": []}
         elif isinstance(response, dict):
             return response
         else:
-            return {"text": str(response), "products": None}
+            return {"text": str(response), "products": []}
 
     except Exception as e:
         return {"text": "Sorry, something went wrong.", "error": str(e)}
+
+# -----------------------
+# Image recommendation route
+# -----------------------
+@app.post("/image-search")
+async def image_search(file: UploadFile = File(...)):
+    try:
+        # Read the uploaded image into memory
+        image_bytes = await file.read()
+
+        # Pass the image to your chatbot's image search function
+        response = bot.get_response_from_image(image_bytes)
+
+        # Normalize response and add condition key for front-end
+        if isinstance(response, str):
+            return JSONResponse(content={
+                "text": response,
+                "products": [],
+                "condition": "string_response"
+            })
+        elif isinstance(response, dict):
+            # Ensure keys exist
+            text = response.get("text", "")
+            products = response.get("products", [])
+            return JSONResponse(content={
+                "text": text,
+                "products": products,
+                "condition": "dict_response"
+            })
+        else:
+            return JSONResponse(content={
+                "text": str(response),
+                "products": [],
+                "condition": "unknown_type"
+            })
+
+    except Exception as e:
+        # Explicit error condition
+        return JSONResponse(content={
+            "text": "Sorry, something went wrong.",
+            "products": [],
+            "condition": "exception",
+            "error": str(e)
+        }, status_code=500)
