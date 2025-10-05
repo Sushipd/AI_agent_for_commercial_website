@@ -42,7 +42,7 @@ class HybridChatbot:
         self.max_history = max_history
         self.last_recommendation = []
 
-        # --- Normalize categories and synonyms ---
+        # Normalize categories and synonyms
         self.category_synonyms = {}
         for cat, syns in CATEGORY_SYNONYMS.items():
             norm_cat = self.normalize(cat)
@@ -50,7 +50,7 @@ class HybridChatbot:
             for syn in syns:
                 self.category_synonyms[self.normalize(syn)] = norm_cat
 
-        # --- Grocery products from CSV ---
+        # Grocery products from CSV
         self.GROCERY_PRODUCTS = []
         try:
             with open(csv_path, newline='', encoding='utf-8') as f:
@@ -66,7 +66,7 @@ class HybridChatbot:
         except Exception as e:
             print("[ERROR] Could not load grocery CSV:", e)
 
-        # --- Static categories ---
+        # Static categories
         self.STATIC_CATEGORIES = {
             "jeans": [{"class_name": f"Jeans {i}", "coarse": "Jeans",
                        "img": f"static/ecommerce_products/jeans/{i}.jpg"} for i in range(1, 4)],
@@ -80,7 +80,7 @@ class HybridChatbot:
         # Normalize keys
         self.STATIC_CATEGORIES = {self.normalize(k): v for k, v in self.STATIC_CATEGORIES.items()}
 
-        # --- Build keywords ---
+        # Build keywords
         self.keywords = set()
         for p in self.GROCERY_PRODUCTS:
             for word in self.tokenize(p['class_name'] + " " + p['coarse']):
@@ -88,7 +88,7 @@ class HybridChatbot:
         for cat in self.STATIC_CATEGORIES:
             self.keywords.add(cat.lower())
 
-        # --- Load embeddings model for text search ---
+        # Load embeddings model for text search
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
         self.category_embeddings = {}
         for cat, syns in CATEGORY_SYNONYMS.items():
@@ -119,7 +119,7 @@ class HybridChatbot:
                         std=[0.229, 0.224, 0.225])
         ])
 
-        # --- Intents ---
+        # Intents
         self.intents = {
             "greeting": {"patterns": ["hi", "hello", "hey", "good morning", "good afternoon", "good evening"],
                          "responses": ["Hello! How can I help you today?",
@@ -140,7 +140,7 @@ class HybridChatbot:
                                                        "Hmm, interesting. Tell me more!"]}
         }
 
-        # --- Intent vocab & BoW matrix ---
+        # Intent vocab & BoW matrix
         self.vocab = set()
         for intent in self.intents.values():
             for pattern in intent["patterns"]:
@@ -154,7 +154,7 @@ class HybridChatbot:
             matrix = [self.text_to_bow(pattern) for pattern in intent_data["patterns"]]
             self.intent_matrix[intent_name] = np.array(matrix)
 
-        # --- Small generative model for fallback ---
+        # Small generative model for fallback
         self.model_name = "microsoft/DialoGPT-small"
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         self.model = AutoModelForCausalLM.from_pretrained(self.model_name, use_safetensors=True).to(
@@ -216,13 +216,13 @@ class HybridChatbot:
         if not user_input:
             return {"text": "Please tell me what kind of product you're looking for!", "products": []}
 
-        # Step 1: tokenize and normalize user input
+        # 1. tokenize and normalize user input
         norm_input_tokens = [self.normalize(t) for t in self.tokenize(user_input)]
 
-        # Step 2: prioritize categories
+        # 2. prioritize categories
         CATEGORY_PRIORITY = ["juice", "milk", "yoghurt", "fruit", "vegetables"]  # higher to lower
 
-        # Step 3: match grocery products
+        # 3. match grocery products
         for cat in CATEGORY_PRIORITY:
             for product in self.GROCERY_PRODUCTS:
                 product_tokens = [self.normalize(w) for w in self.tokenize(product['class_name'] + " " + product['coarse'])]
@@ -236,7 +236,7 @@ class HybridChatbot:
                 matched_products = matched_products[:top_n]
                 break  # stop after first priority category match
 
-        # Step 4: check static category synonyms if no grocery match
+        # 4. check static category synonyms if no grocery match
         if not matched_products:
             for token in norm_input_tokens:
                 if token in self.category_synonyms:
@@ -244,7 +244,7 @@ class HybridChatbot:
                     matched_products = self.STATIC_CATEGORIES.get(category, [])[:top_n]
                     break
 
-        # Step 5: fallback to embedding similarity if still empty
+        # 5. fallback to embedding similarity if still empty
         if not matched_products:
             user_emb = self.embedding_model.encode(user_input, convert_to_tensor=True, device=self.embedding_model.device)
             best_cat = None
@@ -257,7 +257,7 @@ class HybridChatbot:
             if best_cat:
                 matched_products = self.STATIC_CATEGORIES.get(best_cat, [])[:top_n]
 
-        # Step 6: random fallback
+        # 6. random fallback
         if not matched_products:
             matched_products = random.sample(self.GROCERY_PRODUCTS, min(top_n, len(self.GROCERY_PRODUCTS)))
 
@@ -295,7 +295,6 @@ class HybridChatbot:
     # -----------------------
     def get_response_from_image(self, image_bytes, top_n=3):
         try:
-            # device = self.image_model.device
             device = next(self.image_model.parameters()).device
             # Open uploaded image
             image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
