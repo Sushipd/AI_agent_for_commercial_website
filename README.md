@@ -7,7 +7,7 @@ It supports a variety of products such as **grocery items**, **jeans**, **sofas*
 
 ---
 
-## 🌟 Features
+## Features
 
 - **Text-based product recommendation**  
   Ask the chatbot about products like “I want apples” or “Show me sofas”.
@@ -93,3 +93,27 @@ as shown in requirements.txt
 
 use "uvicorn main:app --reload" to run the app,
 then open your browser and go to: http://127.0.0.1:8000
+
+---
+
+## Datasets
+
+This project uses two datasets for product recommendation and image search, both can be manually downloaded from Kaggle:
+
+ - **Grocery Store Image Dataset**   Source: Kaggle
+   Contains images of various grocery items (fruits, vegetables, juices, etc.) used for text and image-based recommendations.
+
+ - **E-commerce Products Image Dataset**   Source: Kaggle
+   Contains images of e-commerce products like jeans, sofas, T-shirts, and TVs for static category recommendations.
+
+**Download Datasets with kagglehub**
+
+import kagglehub
+
+# Download latest Grocery Store dataset
+grocery_path = kagglehub.dataset_download("amoghmisra27/grocery")
+print("Path to grocery dataset files:", grocery_path)
+
+# Download latest E-commerce Products dataset
+ecommerce_path = kagglehub.dataset_download("sunnykusawa/ecommerce-products-image-dataset")
+print("Path to e-commerce dataset files:", ecommerce_path)
