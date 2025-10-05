@@ -3,8 +3,7 @@
 ## AI Product Chatbot & Image Search
 
 A web-based **AI chatbot** that provides **product recommendations** via both **text queries** and **image uploads**.  
-It supports a variety of products such as **grocery items**, **jeans**, **sofas**, **T-shirts**, and **TVs**,  
-with **dynamic carousels** and **real-time recommendations**.
+It supports a variety of products such as **grocery items**, **jeans**, **sofas**, **T-shirts**, and **TVs**, with **dynamic carousels**.
 
 ---
 
@@ -17,12 +16,12 @@ with **dynamic carousels** and **real-time recommendations**.
   Upload a product image and get visually similar matches.
 
 - **Hybrid chatbot engine**  
-  - Intent recognition for greetings, thanks, capabilities, and fallback  
+  Intent recognition for greetings, thanks, capabilities, and fallback  
   Combines intent recognition, keyword matching, and embedding similarity for flexible responses.
 
 
-- **Dynamic product carousels**  
-  Visualize top products for static categories and grocery items.
+- **Product carousels**  
+  Visualize products for static categories and grocery items.
 
 The system combines **Natural Language Processing (NLP)**, **Computer Vision**, and **FastAPI-based web services** to provide intelligent product recommendations.
 
@@ -40,7 +39,7 @@ The system combines **Natural Language Processing (NLP)**, **Computer Vision**, 
 | **File Handling**       | **python-multipart** | Enables image upload via API endpoints |
 | **Image Processing**    | **Pillow (PIL)** | Efficient image manipulation and format handling |
 | **Computation**         | **NumPy** | Fast numerical operations for embeddings and similarity metrics |
-| **Frontend**            | **HTML + JavaScript** (optional) | Simple, responsive interface for user interaction |
+| **Frontend**            | **HTML + JavaScript** | Simple, responsive interface for user interaction |
 
 ---
 
@@ -88,16 +87,7 @@ The system combines **Natural Language Processing (NLP)**, **Computer Vision**, 
 ---
 
 Make sure to install all packages including:
- fastapi 
- uvicorn 
- pydantic 
- python-multipart 
- torch 
- torchvision 
- pillow 
- transformers 
- sentence-transformers 
- numpy 
+ fastapi, uvicorn, pydantic, python-multipart, torch, torchvision, pillow, transformers, sentence-transformers, numpy 
 
 as shown in requirements.txt
 
