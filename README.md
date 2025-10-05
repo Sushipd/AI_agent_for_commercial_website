@@ -1,6 +1,6 @@
 # AI Agent for Commercial Website
 
-# AI Product Chatbot & Image Search
+## AI Product Chatbot & Image Search
 
 A web-based **AI chatbot** that provides **product recommendations** via both **text queries** and **image uploads**.  
 It supports a variety of products such as **grocery items**, **jeans**, **sofas**, **T-shirts**, and **TVs**,  
