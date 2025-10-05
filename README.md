@@ -98,16 +98,19 @@ then open your browser and go to: http://127.0.0.1:8000
 
 ## Datasets
 
-This project uses two datasets for product recommendation and image search, both can be manually downloaded from Kaggle:
+This project uses two datasets for product recommendation and image search. You can download them manually from Kaggle or programmatically using `kagglehub`.
 
- - **Grocery Store Image Dataset**   Source: Kaggle
-   Contains images of various grocery items (fruits, vegetables, juices, etc.) used for text and image-based recommendations.
+### 1. Grocery Store Image Dataset
+- **Source:** [Kaggle](https://www.kaggle.com/datasets/amoghmisra27/grocery)  
+- **Description:** Contains images of various grocery items (fruits, vegetables, juices, etc.) used for text- and image-based recommendations.
 
- - **E-commerce Products Image Dataset**   Source: Kaggle
-   Contains images of e-commerce products like jeans, sofas, T-shirts, and TVs for static category recommendations.
+### 2. E-commerce Products Image Dataset
+- **Source:** [Kaggle](https://www.kaggle.com/datasets/sunnykusawa/ecommerce-products-image-dataset?resource=download)  
+- **Description:** Contains images of e-commerce products like jeans, sofas, T-shirts, and TVs for static category recommendations.
 
-**Download Datasets with kagglehub**
+### Download Datasets with `kagglehub`
 
+```python
 import kagglehub
 
 # Download latest Grocery Store dataset
@@ -117,3 +120,4 @@ print("Path to grocery dataset files:", grocery_path)
 # Download latest E-commerce Products dataset
 ecommerce_path = kagglehub.dataset_download("sunnykusawa/ecommerce-products-image-dataset")
 print("Path to e-commerce dataset files:", ecommerce_path)
+```
