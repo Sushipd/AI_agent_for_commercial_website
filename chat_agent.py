@@ -209,7 +209,7 @@ class HybridChatbot:
     # -----------------------
     # Recommendation
     # -----------------------
-    def recommend_products(self, user_input=None, top_n=3):
+    def recommend_products(self, user_input=None, top_n=5):
         self.last_recommendation = []
         matched_products = []
 
@@ -293,7 +293,7 @@ class HybridChatbot:
     # -----------------------
     # Get response for image search
     # -----------------------
-    def get_response_from_image(self, image_bytes, top_n=3):
+    def get_response_from_image(self, image_bytes, top_n=5):
         try:
             device = next(self.image_model.parameters()).device
             # Open uploaded image
