@@ -57,8 +57,8 @@ class HybridChatbot:
                 reader = csv.DictReader(f)
                 for row in reader:
                     product = {
-                        "class_name": row.get("Class Name (str)", "").strip(),
-                        "coarse": row.get("Coarse Class Name (str)", "").strip(),
+                        "class_name": self.singularize(row.get("Class Name (str)", "").strip()),
+                        "coarse": self.singularize(row.get("Coarse Class Name (str)", "").strip()),
                         "img": "static/GroceryStoreDataset/dataset/" + row.get("Iconic Image Path (str)", "").strip()
                     }
                     self.GROCERY_PRODUCTS.append(product)
@@ -164,8 +164,19 @@ class HybridChatbot:
     # -----------------------
     # Helper methods
     # -----------------------
+    def singularize(self, word):
+        if word.endswith('s') and len(word) > 3:
+            return word[:-1]
+        # elif word.endswith('es') and not word.endswith('ses'):
+        #     return word[:-2]
+        # elif word.endswith('ies'):
+        #     return word[:-3] + 'y'
+        else:
+            return word
+
     def tokenize(self, text):
-        return re.findall(r'\w+(?:-\w+)?', text.lower())
+        tokens = re.findall(r'\w+(?:-\w+)?', text.lower())
+        return [self.singularize(re.sub(r'[\s\-_]', '', t)) for t in tokens]
 
     def normalize(self, text):
         return re.sub(r'[\s\-_]', '', text.lower())
@@ -228,8 +239,9 @@ class HybridChatbot:
                 product_tokens = [self.normalize(w) for w in self.tokenize(product['class_name'] + " " + product['coarse'])]
                 # if any normalized user token is in normalized product tokens
                 if any(u in product_tokens for u in norm_input_tokens):
-                    # check category matches
-                    product_category = self.category_synonyms.get(self.normalize(product['coarse']), None)
+                    # check category matches, singularize + normalize coarse class name
+                    norm_coarse = self.normalize(self.singularize(product['coarse']))
+                    product_category = self.category_synonyms.get(norm_coarse, None)
                     if product_category == cat:
                         matched_products.append(product)
             if matched_products:
