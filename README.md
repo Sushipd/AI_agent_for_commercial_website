@@ -68,6 +68,8 @@ The system combines **Natural Language Processing (NLP)**, **Computer Vision**, 
    - Product Knowledge Base:
       Loads grocery and e-commerce product data from a CSV file and static image directories.
       Dynamically computes and caches image embeddings for efficiency.
+   - Conversational fallback generation:
+      Uses DialoGPT for natural user interaction.
 
 4. **Response Handler**  
    - Classifies output type (`string_response`, `dict_response`, or `exception`)  
