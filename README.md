@@ -2,8 +2,8 @@
 
 ## AI Product Chatbot & Image Search
 
-A web-based **AI chatbot** that provides **product recommendations** via both **text queries** and **image uploads**.  
-It supports a variety of products such as **grocery items**, **jeans**, **sofas**, **T-shirts**, and **TVs**, with **dynamic carousels**.
+A web-based multimodal **AI chatbot** that **combines semantic text search, image similarity retrieval, and intent-driven dialogue to recommend products intelligently** via both **text queries** and **image uploads**.  
+It supports a variety of products such as **grocery items**, **jeans**, **sofas**, **T-shirts**, and **TVs**, with **dynamic carousels**. 
 
 ---
 
